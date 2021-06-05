@@ -1,0 +1,11 @@
+.git*
+.atomistignore
+.eslint*
+*.md
+tsconfig.json
+codegen.yml
+test/
+legal/
+docs/
+skill/
+/index.*
