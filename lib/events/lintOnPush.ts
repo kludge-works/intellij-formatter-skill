@@ -93,7 +93,5 @@ export const handler: EventHandler<LintOnPushSubscription, LintConfiguration> =
 	async ctx =>
 		runSteps({
 			context: ctx,
-			steps: [
-				SetupStep,
-			],
+			steps: [SetupStep],
 		});
