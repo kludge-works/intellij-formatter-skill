@@ -33,7 +33,7 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 	author: "kludge-works",
 	categories: [Category.CodeMaintenance],
 	iconUrl:
-		"https://raw.githubusercontent.com/atomist-skills/prettier-skill/main/docs/images/icon.svg",
+		"https://intellij-icons.jetbrains.design/icons/ProductLogosIcons/generated/idea_com/idea_com.svg",
 	license: "Apache-2.0",
 
 	runtime: {
