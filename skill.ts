@@ -72,20 +72,6 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 			lineStyle: LineStyle.Multiple,
 			required: false,
 		},
-		args: {
-			type: ParameterType.StringArray,
-			displayName: "Extra arguments",
-			description:
-				"Additional [command line arguments](https://prettier.io/docs/en/cli.html) passed to Prettier",
-			required: false,
-		},
-		modules: {
-			type: ParameterType.StringArray,
-			displayName: "npm packages to install",
-			description:
-				"Use this parameter to configure npm packages like prettier itself or plugins that should get installed",
-			required: false,
-		},
 		push: parameter.pushStrategy({
 			displayName: "Fix problems",
 			description:
@@ -111,28 +97,6 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 			displayName: "Pull request labels",
 			description:
 				"Add additional labels to pull requests raised by this skill, e.g. to configure the [auto-merge](https://go.atomist.com/catalog/skills/atomist/github-auto-merge-skill) behavior.",
-			required: false,
-		},
-		configure: {
-			type: ParameterType.SingleChoice,
-			displayName: "Configure repositories",
-			description:
-				"Update repositories to use the skill's Prettier configuration",
-			options: [
-				{
-					text: "Update Prettier config, ignore files and install Git commit hooks",
-					value: "prettier_and_hook",
-				},
-				{
-					text: "Update Prettier config and ignore files",
-					value: "prettier_only",
-				},
-				{
-					text: "Don't configure Prettier",
-					value: "none",
-				},
-			],
-			defaultValue: "none",
 			required: false,
 		},
 		repos: parameter.repoFilter(),

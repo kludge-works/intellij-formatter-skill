@@ -24,11 +24,8 @@ export interface LintConfiguration {
 	ignores?: string[];
 	config?: string;
 	commitMsg?: string;
-	args?: string[];
-	modules?: string[];
 	push?: "none" & parameter.PushStrategy;
 	labels?: string[];
-	configure?: "prettier_only" | "prettier_and_hook" | "none";
 }
 
 export const DefaultLintConfiguration: LintConfiguration = {
