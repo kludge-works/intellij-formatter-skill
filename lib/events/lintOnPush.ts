@@ -26,9 +26,11 @@ import {
 	status,
 	Step,
 } from "@atomist/skill";
+import { info } from "@atomist/skill/lib/log";
 
 import { LintConfiguration } from "../configuration";
 import { LintOnPushSubscription } from "../typings/types";
+import stringify = Mocha.utils.stringify;
 
 interface LintParameters {
 	project: project.Project;
@@ -78,12 +80,14 @@ const SetupStep: LintStep = {
 			} at sha ${push.after.sha.slice(0, 7)}`,
 		);
 
-		params.check = await github.createCheck(ctx, params.project.id, {
-			sha: push.after.sha,
-			name: "prettier-skill",
-			title: "Prettier",
-			body: `Running \`prettier\``,
-		});
+		// params.check = await github.createCheck(ctx, params.project.id, {
+		// 	sha: push.after.sha,
+		// 	name: "prettier-skill",
+		// 	title: "Prettier",
+		// 	body: `Running \`prettier\``,
+		// });
+
+		await info(`ctx.data: ${stringify(ctx.data)}`);
 
 		return status.success();
 	},
