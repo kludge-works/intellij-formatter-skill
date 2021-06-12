@@ -36,10 +36,7 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 		"https://intellij-icons.jetbrains.design/icons/ProductLogosIcons/generated/idea_com/idea_com.svg",
 	license: "Apache-2.0",
 
-	runtime: {
-		memory: 2048,
-		timeout: 540,
-	},
+	subscriptions: ["@atomist/skill/github/onPush"],
 
 	containers: {
 		formatter: { image: "kludgeworks/intellijformatter" },
