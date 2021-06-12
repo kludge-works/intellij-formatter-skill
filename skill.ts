@@ -39,7 +39,10 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 	subscriptions: ["@atomist/skill/github/onPush"],
 
 	containers: {
-		formatter: { image: "kludgeworks/intellijformatter" },
+		formatter: {
+			image: "kludgeworks/intellijformatter",
+			command: ["npm ci && npm run skill"],
+		},
 	},
 
 	resourceProviders: {
