@@ -41,7 +41,9 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 	containers: {
 		formatter: {
 			// image: "kludgeworks/intellijformatter",
-			image: "hello-world",
+			image: "ubuntu",
+			command: ["echo"],
+			args: ["1", "2", "3"],
 			resources: {
 				limit: {
 					cpu: 2,
