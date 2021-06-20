@@ -49,6 +49,6 @@ export const onPush: EventHandler<
 	// 	}),
 	// );
 
-	await info(`ctx.data: ${ctx.data}`);
+	await info(`ctx.data: ${stringify(ctx.data)}`);
 	return status.success();
 };
