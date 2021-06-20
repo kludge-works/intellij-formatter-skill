@@ -41,8 +41,8 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 	containers: {
 		formatter: {
 			image: "kludgeworks/intellijformatter",
-			command: ["npm"],
-			args: ["ci npm run skill"],
+			// command: ["npm"],
+			args: ["npm ci && npm run skill"],
 			resources: {
 				limit: {
 					cpu: 2,
