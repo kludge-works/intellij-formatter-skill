@@ -17,7 +17,7 @@
 import { EventHandler, status, subscription } from "@atomist/skill";
 import { info } from "@atomist/skill/lib/log";
 
-import { LintConfiguration } from "../configuration";
+import { LintConfiguration } from "./configuration";
 
 export const onPush: EventHandler<
 	subscription.types.OnPushSubscription,
