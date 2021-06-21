@@ -16,9 +16,6 @@
 
 import { parameter } from "@atomist/skill";
 
-export const NpmInstallArgs = ["--ignore-scripts", "--no-audit", "--no-fund"];
-export const NpmDevInstallArgs = ["--save-dev", ...NpmInstallArgs];
-
 export interface LintConfiguration {
 	glob?: string;
 	ignores?: string[];
@@ -27,8 +24,3 @@ export interface LintConfiguration {
 	push?: "none" & parameter.PushStrategy;
 	labels?: string[];
 }
-
-export const DefaultLintConfiguration: LintConfiguration = {
-	glob: ".",
-	commitMsg: `Prettier format fixes\n\n[atomist:generated]\n[atomist-skill:atomist/prettier-skill]`,
-};
