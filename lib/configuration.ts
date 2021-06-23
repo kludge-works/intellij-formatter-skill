@@ -16,6 +16,8 @@
 
 import { parameter } from "@atomist/skill";
 
+export const intellijFormatter = "/opt/intellij/bin/format.sh";
+
 export interface LintConfiguration {
 	glob?: string;
 	ignores?: string[];
@@ -23,4 +25,6 @@ export interface LintConfiguration {
 	commitMsg?: string;
 	push?: "none" & parameter.PushStrategy;
 	labels?: string[];
+	onlyFormatChangedFiles: boolean;
+	filesToFormatPerSlice: 100;
 }

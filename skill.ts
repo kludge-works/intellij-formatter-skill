@@ -81,6 +81,13 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 			lineStyle: LineStyle.Multiple,
 			required: false,
 		},
+		onlyFormatChangedFiles: {
+			type: ParameterType.Boolean,
+			displayName: "Only format modified files",
+			description:
+				"If checked then only format files that were modified in the commmit.",
+			required: false,
+		},
 		push: parameter.pushStrategy({
 			displayName: "Fix problems",
 			description:
@@ -109,5 +116,12 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 			required: false,
 		},
 		repos: parameter.repoFilter(),
+		filesToFormatPerSlice: {
+			type: ParameterType.Int,
+			visibility: ParameterVisibility.Hidden,
+			defaultValue: 100,
+			required: true,
+			description: "Number of files to format per execution",
+		},
 	},
 });

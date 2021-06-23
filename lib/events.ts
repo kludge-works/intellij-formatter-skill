@@ -22,8 +22,11 @@ import {
 	status,
 	subscription,
 } from "@atomist/skill";
+import { Commit } from "@atomist/skill/lib/definition/subscription/common_types";
+import { globFiles, Project } from "@atomist/skill/lib/project";
+import * as fs from "fs-extra";
 
-import { LintConfiguration } from "./configuration";
+import { intellijFormatter, LintConfiguration } from "./configuration";
 
 export const onPush: EventHandler<
 	subscription.types.OnPushSubscription,
@@ -54,12 +57,16 @@ export const onPush: EventHandler<
 		}),
 	);
 
-	// project.
-	// const result = await childProcess.spawnPromise(
-	// 	"bash",
-	// 	["-c", ctx.configuration.parameters.command],
-	// 	{ log: childProcess.captureLog(log.info) },
-	// );
+	// push.commits
+	await formatProject(
+		project,
+		ctx.configuration.parameters,
+		await filesToFormat(
+			project,
+			ctx.configuration.parameters,
+			push.commits as Commit[],
+		),
+	);
 
 	return github.persistChanges(
 		ctx,
@@ -85,3 +92,48 @@ export const onPush: EventHandler<
 		},
 	);
 };
+
+async function formatProject(
+	project: Project,
+	config: LintConfiguration,
+	allFilesToFormat: string[],
+) {
+	while (allFilesToFormat.length) {
+		const files = allFilesToFormat.splice(0, config.filesToFormatPerSlice);
+		await project.spawn(intellijFormatter, files, { level: "info" });
+	}
+}
+
+async function filesToFormat(
+	project: Project,
+	config: LintConfiguration,
+	commits: Commit[],
+) {
+	let allFilesToFormat: string[];
+	if (config.onlyFormatChangedFiles) {
+		allFilesToFormat = await changedFilesFromCommits(project, commits);
+	} else {
+		allFilesToFormat = await globFiles(project, config.glob);
+	}
+	return allFilesToFormat;
+}
+
+async function changedFilesFromCommits(
+	project: Project,
+	commits: Commit[],
+): Promise<string[]> {
+	const set = new Set<string>();
+
+	for (const commit of commits) {
+		const result = await project.spawn(
+			"git",
+			["diff-tree", "--no-commit-id", "--name-only", "-r", commit.sha],
+			{
+				level: "info",
+			},
+		);
+		result.output.forEach(item => set.add(item));
+	}
+
+	return Array.from(set).filter(file => fs.existsSync(file));
+}
