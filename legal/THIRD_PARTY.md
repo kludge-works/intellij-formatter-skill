@@ -18,7 +18,7 @@ This page details all runtime dependencies of `intellij-formatter-skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 44    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 598   |
+| [MIT](#mit)                     | 599   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -482,6 +482,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `form-data`                                          | `3.0.1`        | Felix Geisendörfer             | [https://github.com/form-data/form-data](https://github.com/form-data/form-data)                                                                                                                     |
 | `form-data`                                          | `4.0.0`        | Felix Geisendörfer             | [https://github.com/form-data/form-data](https://github.com/form-data/form-data)                                                                                                                     |
 | `fs-capacitor`                                       | `6.2.0`        | Mike Marcacci                  | [https://github.com/mike-marcacci/fs-capacitor](https://github.com/mike-marcacci/fs-capacitor)                                                                                                       |
+| `fs-extra`                                           | `10.0.0`       | JP Richardson                  | [https://github.com/jprichardson/node-fs-extra](https://github.com/jprichardson/node-fs-extra)                                                                                                       |
 | `fs-extra`                                           | `9.1.0`        | JP Richardson                  | [https://github.com/jprichardson/node-fs-extra](https://github.com/jprichardson/node-fs-extra)                                                                                                       |
 | `fsevents`                                           | `2.3.2`        |                                | [https://github.com/fsevents/fsevents](https://github.com/fsevents/fsevents)                                                                                                                         |
 | `function-bind`                                      | `1.1.1`        | Raynos                         | [https://github.com/Raynos/function-bind](https://github.com/Raynos/function-bind)                                                                                                                   |
