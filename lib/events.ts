@@ -119,7 +119,7 @@ async function filesToFormat(
 	return mm.not(allFilesToFormat, config.ignores);
 }
 
-async function changedFilesFromCommits(
+export async function changedFilesFromCommits(
 	project: Project,
 	commits: Commit[],
 ): Promise<string[]> {
