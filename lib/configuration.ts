@@ -18,7 +18,7 @@ import { parameter } from "@atomist/skill";
 
 export const intellijFormatter = "/opt/intellij/bin/format.sh";
 
-export interface LintConfiguration {
+export interface FormatterConfiguration {
 	glob?: string;
 	ignores?: string[];
 	config?: string;

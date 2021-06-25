@@ -24,9 +24,9 @@ import {
 	skill,
 } from "@atomist/skill";
 
-import { LintConfiguration } from "./lib/configuration";
+import { FormatterConfiguration } from "./lib/configuration";
 
-export const Skill = skill<LintConfiguration & { repos: any }>({
+export const Skill = skill<FormatterConfiguration & { repos: any }>({
 	name: "intellij-formatter-skill",
 	namespace: "kludge-works",
 	displayName: "intellij formatter",
@@ -60,11 +60,11 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 
 	parameters: {
 		glob: {
-			type: ParameterType.String,
+			type: ParameterType.StringArray,
 			displayName: "Files",
-			description:
-				"File, folder or glob pattern to format (defaults to '.')",
-			required: false,
+			description: "glob pattern to format",
+			required: true,
+			defaultValue: ["**/*.java"],
 		},
 		ignores: {
 			type: ParameterType.StringArray,
@@ -72,12 +72,13 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 			description:
 				"Pattern of files or folders to ignore during formatting",
 			required: false,
+			defaultValue: [],
 		},
 		config: {
 			type: ParameterType.String,
 			displayName: "Configuration",
 			description:
-				"Prettier configuration in JSON format used if project does not contain own configuration. See the [Prettier documentation](https://prettier.io/docs/en/configuration.html) on how to configure it.",
+				"IntelliJ code format to use. If not specified the default Intellij code format will be used",
 			lineStyle: LineStyle.Multiple,
 			required: false,
 		},
@@ -85,13 +86,13 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 			type: ParameterType.Boolean,
 			displayName: "Only format modified files",
 			description:
-				"If checked then only format files that were modified in the commmit.",
-			required: false,
+				"If checked then only format files that were modified in the commit",
+			required: true,
 		},
 		push: parameter.pushStrategy({
 			displayName: "Fix problems",
 			description:
-				"Run Prettier with `--write` option and determine how and when fixes should be committed back into the repository",
+				"Determine how and when fixes should be committed back into the repository",
 			options: [
 				{
 					text: "Do not apply fixes",
@@ -103,8 +104,8 @@ export const Skill = skill<LintConfiguration & { repos: any }>({
 			type: ParameterType.String,
 			displayName: "Commit message",
 			description:
-				"Commit message to use when committing Prettier fixes back into the repository",
-			placeHolder: "ESLint fixes",
+				"Commit message to use when committing fixes back into the repository",
+			placeHolder: "IntelliJ formatter fixes",
 			required: false,
 			visibility: ParameterVisibility.Hidden,
 		},

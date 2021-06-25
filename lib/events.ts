@@ -25,12 +25,13 @@ import {
 import { Commit } from "@atomist/skill/lib/definition/subscription/common_types";
 import { globFiles, Project } from "@atomist/skill/lib/project";
 import * as fs from "fs-extra";
+import * as mm from "micromatch";
 
-import { intellijFormatter, LintConfiguration } from "./configuration";
+import { FormatterConfiguration, intellijFormatter } from "./configuration";
 
 export const onPush: EventHandler<
 	subscription.types.OnPushSubscription,
-	LintConfiguration
+	FormatterConfiguration
 > = async ctx => {
 	const push = ctx.data.Push[0];
 	const repo = push.repo;
@@ -71,7 +72,7 @@ export const onPush: EventHandler<
 	return github.persistChanges(
 		ctx,
 		project,
-		"pr",
+		ctx.configuration.parameters.push,
 		{
 			branch: push.branch,
 			defaultBranch: repo.defaultBranch,
@@ -82,9 +83,9 @@ export const onPush: EventHandler<
 			},
 		},
 		{
-			branch: `atomist/eslint-${push.branch}`,
-			title: "ESLint fixes",
-			body: "ESLint fixed warnings and/or errors",
+			branch: `atomist/intellij-formatter-${push.branch}`,
+			title: "IntelliJ formatter fixes",
+			body: "IntelliJ formatter reformatted files",
 			labels: params.labels,
 		},
 		{
@@ -95,7 +96,7 @@ export const onPush: EventHandler<
 
 async function formatProject(
 	project: Project,
-	config: LintConfiguration,
+	config: FormatterConfiguration,
 	allFilesToFormat: string[],
 ) {
 	while (allFilesToFormat.length) {
@@ -106,7 +107,7 @@ async function formatProject(
 
 async function filesToFormat(
 	project: Project,
-	config: LintConfiguration,
+	config: FormatterConfiguration,
 	commits: Commit[],
 ) {
 	let allFilesToFormat: string[];
@@ -115,7 +116,7 @@ async function filesToFormat(
 	} else {
 		allFilesToFormat = await globFiles(project, config.glob);
 	}
-	return allFilesToFormat;
+	return mm.not(allFilesToFormat, config.ignores);
 }
 
 async function changedFilesFromCommits(
