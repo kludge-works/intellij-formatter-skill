@@ -94,11 +94,11 @@ export const onPush: EventHandler<
 	);
 };
 
-async function formatProject(
+export async function formatProject(
 	project: Project,
 	config: FormatterConfiguration,
 	allFilesToFormat: string[],
-) {
+): Promise<void> {
 	while (allFilesToFormat.length) {
 		const files = allFilesToFormat.splice(0, config.filesToFormatPerSlice);
 		await project.spawn(intellijFormatter, files, { level: "info" });

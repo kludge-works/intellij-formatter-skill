@@ -26,5 +26,5 @@ export interface FormatterConfiguration {
 	push?: "none" & parameter.PushStrategy;
 	labels?: string[];
 	onlyFormatChangedFiles: boolean;
-	filesToFormatPerSlice: 100;
+	filesToFormatPerSlice: number;
 }
