@@ -62,8 +62,8 @@ export const Skill = skill<FormatterConfiguration & { repos: any }>({
 		glob: {
 			type: ParameterType.StringArray,
 			displayName: "Files",
-			description: "glob pattern to format",
-			required: true,
+			description: "glob pattern to format, defaults to **/*.java",
+			required: false,
 			defaultValue: ["**/*.java"],
 		},
 		ignores: {
