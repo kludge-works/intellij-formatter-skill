@@ -105,11 +105,11 @@ async function formatProject(
 	}
 }
 
-async function filesToFormat(
+export async function filesToFormat(
 	project: Project,
 	config: FormatterConfiguration,
 	commits: Commit[],
-) {
+): Promise<string[]> {
 	let allFilesToFormat: string[];
 	if (config.onlyFormatChangedFiles) {
 		allFilesToFormat = await changedFilesFromCommits(project, commits);
