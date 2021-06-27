@@ -60,11 +60,11 @@ export const Skill = skill<FormatterConfiguration & { repos: any }>({
 
 	parameters: {
 		glob: {
-			type: ParameterType.StringArray,
+			type: ParameterType.String,
 			displayName: "Files",
 			description: "glob pattern to format, defaults to **/*.java",
 			required: false,
-			defaultValue: ["**/*.java"],
+			defaultValue: "**/*.java",
 		},
 		ignores: {
 			type: ParameterType.StringArray,
@@ -87,7 +87,6 @@ export const Skill = skill<FormatterConfiguration & { repos: any }>({
 			displayName: "Only format modified files",
 			description:
 				"If checked then only format files that were modified in the commit",
-			required: true,
 		},
 		push: parameter.pushStrategy({
 			displayName: "Fix problems",
