@@ -99,9 +99,19 @@ export async function formatProject(
 	config: FormatterConfiguration,
 	allFilesToFormat: string[],
 ): Promise<void> {
+	const args: string[] = [];
+	if (config.codestyle) {
+		fs.writeFileSync("/atm/home/codestyle.xml", config.codestyle);
+		args.push("-s", "/atm/home/codestyle.xml");
+	}
+
 	while (allFilesToFormat.length) {
-		const files = allFilesToFormat.splice(0, config.filesToFormatPerSlice);
-		await project.spawn(intellijFormatter, files, { level: "info" });
+		const formatterArgs = args.concat(
+			allFilesToFormat.splice(0, config.filesToFormatPerSlice),
+		);
+		await project.spawn(intellijFormatter, formatterArgs, {
+			level: "info",
+		});
 	}
 }
 

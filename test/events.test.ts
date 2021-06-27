@@ -23,7 +23,9 @@ describe("on event", function () {
 	});
 
 	it("only return distinct files that exist", async () => {
-		const project = createFakeProject(sandbox.fake(cmdFunction));
+		const project = createFakeProject(
+			sandbox.fake(shaToFilenamesCmdFunction),
+		);
 
 		const commits: Pick<Commit, "sha">[] = [
 			{ sha: "same.java,distinct-1.java,doesnt-exist.java" },
@@ -51,7 +53,9 @@ describe("on event", function () {
 	});
 
 	it("format files from commits", async () => {
-		const project = createFakeProject(sandbox.fake(cmdFunction));
+		const project = createFakeProject(
+			sandbox.fake(shaToFilenamesCmdFunction),
+		);
 
 		const commits: Pick<Commit, "sha">[] = [
 			{ sha: "same.java,distinct-1.java,doesnt-exist.java" },
@@ -80,7 +84,9 @@ describe("on event", function () {
 	});
 
 	it("format all java files that don't match ignore pattern", async () => {
-		const project = createFakeProject(sandbox.fake(cmdFunction));
+		const project = createFakeProject(
+			sandbox.fake(shaToFilenamesCmdFunction),
+		);
 
 		fs.closeSync(fs.openSync(`${project.path()}/distinct-blah.java`, "w"));
 		fs.closeSync(fs.openSync(`${project.path()}/main.java`, "w"));
@@ -101,7 +107,9 @@ describe("on event", function () {
 	});
 
 	it("format all java files with no ignore pattern", async () => {
-		const project = createFakeProject(sandbox.fake(cmdFunction));
+		const project = createFakeProject(
+			sandbox.fake(shaToFilenamesCmdFunction),
+		);
 
 		fs.closeSync(fs.openSync(`${project.path()}/distinct-blab.java`, "w"));
 		fs.closeSync(fs.openSync(`${project.path()}/min.java`, "w"));
@@ -121,7 +129,7 @@ describe("on event", function () {
 	});
 
 	it("formatProject slicing", async () => {
-		const fake = sandbox.fake(sandbox.fake(cmdFunction));
+		const fake = sandbox.fake(shaToFilenamesCmdFunction);
 		const project = createFakeProject(fake);
 
 		await event.formatProject(
@@ -131,6 +139,63 @@ describe("on event", function () {
 		);
 
 		assert.ok(fake.calledTwice, "project.spawn(..) should be called twice");
+	});
+
+	it("formatProject custom codestyle", async () => {
+		const fake = sandbox.fake();
+		const project = createFakeProject(fake);
+
+		const writeFileSyncStub = sandbox
+			.stub(fs, "writeFileSync")
+			.withArgs("/atm/home/codestyle.xml", "<codeFormatting/>");
+
+		await event.formatProject(
+			project,
+			{
+				filesToFormatPerSlice: 2,
+				codestyle: "<codeFormatting/>",
+			} as FormatterConfiguration,
+			["1.java"],
+		);
+
+		assert.ok(writeFileSyncStub.calledOnce);
+		assert.ok(fake.calledOnce);
+		assert.deepEqual(fake.args, [
+			[
+				"/opt/intellij/bin/format.sh",
+				["-s", "/atm/home/codestyle.xml", "1.java"],
+				{
+					level: "info",
+				},
+			],
+		]);
+	});
+
+	it("formatProject default codestyle", async () => {
+		const fake = sandbox.fake();
+		const project = createFakeProject(fake);
+
+		const writeFileSyncStub = sandbox
+			.stub(fs, "writeFileSync")
+			.withArgs("/atm/home/codestyle.xml", "<codeFormatting/>");
+
+		await event.formatProject(
+			project,
+			{ filesToFormatPerSlice: 2 } as FormatterConfiguration,
+			["1.java"],
+		);
+
+		assert.ok(writeFileSyncStub.notCalled);
+		assert.ok(fake.calledOnce);
+		assert.deepEqual(fake.args, [
+			[
+				"/opt/intellij/bin/format.sh",
+				["1.java"],
+				{
+					level: "info",
+				},
+			],
+		]);
 	});
 
 	function createFakeProject(fakeCmd: sinon.SinonSpy): Project {
@@ -151,7 +216,7 @@ describe("on event", function () {
 	}
 });
 
-const cmdFunction = (cmd, args) => {
+const shaToFilenamesCmdFunction = (cmd, args) => {
 	return {
 		status: 0,
 		output: args[args.length - 1].split(","),

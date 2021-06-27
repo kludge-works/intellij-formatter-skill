@@ -74,11 +74,11 @@ export const Skill = skill<FormatterConfiguration & { repos: any }>({
 			required: false,
 			defaultValue: [],
 		},
-		config: {
+		codestyle: {
 			type: ParameterType.String,
 			displayName: "Configuration",
 			description:
-				"IntelliJ code format to use. If not specified the default Intellij code format will be used",
+				"IntelliJ code style to use. If not specified the default Intellij code style will be used",
 			lineStyle: LineStyle.Multiple,
 			required: false,
 		},

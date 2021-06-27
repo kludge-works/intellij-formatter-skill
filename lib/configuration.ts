@@ -21,7 +21,7 @@ export const intellijFormatter = "/opt/intellij/bin/format.sh";
 export interface FormatterConfiguration {
 	glob?: string;
 	ignores?: string[];
-	config?: string;
+	codestyle?: string;
 	commitMsg?: string;
 	push?: "none" & parameter.PushStrategy;
 	labels?: string[];
