@@ -169,6 +169,8 @@ export async function changedFilesFromCommits(
 
 		const result3 = await project.spawn("ls");
 		info(`result3: ${JSON.stringify(result3)}`);
+		info(`result3.stdout: ${JSON.stringify(result3.stdout)}`);
+		info(`result3.output: ${JSON.stringify(result3.output)}`);
 
 		result.output.forEach(item => set.add(item));
 	}
