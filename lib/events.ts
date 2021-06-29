@@ -121,6 +121,11 @@ export async function filesToFormat(
 	config: FormatterConfiguration,
 	commits: Commit[],
 ): Promise<string[]> {
+	debug(
+		`filesToFormat( commits: ${JSON.stringify(
+			commits,
+		)}, config: ${JSON.stringify(config)})`,
+	);
 	let allFilesToFormat: string[];
 	if (config.onlyFormatChangedFiles) {
 		allFilesToFormat = await changedFilesFromCommits(project, commits);
