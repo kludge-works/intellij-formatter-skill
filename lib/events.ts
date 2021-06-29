@@ -153,6 +153,7 @@ export async function changedFilesFromCommits(
 			"-r",
 			commit.sha,
 		]);
+		info(`stdout ${result.stdout}`);
 		result.stdout.split("\n").forEach(item => set.add(item));
 	}
 	info(`changedFilesFromCommits: ${JSON.stringify(set)}`);
