@@ -159,8 +159,5 @@ export async function changedFilesFromCommits(
 
 		lines.forEach(item => set.add(item));
 	}
-	return Array.from(set).filter(file => {
-		info(`project.path: ${project.path(file)}`);
-		return fs.existsSync(project.path(file));
-	});
+	return Array.from(set);
 }
