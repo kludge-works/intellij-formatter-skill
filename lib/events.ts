@@ -149,7 +149,7 @@ export async function changedFilesFromCommits(
 		const result = await project.spawn(
 			"git",
 			["diff-tree", "--no-commit-id", "--name-only", "-r", commit.sha],
-			{ stdio: "inherit" },
+			{ stdio: "pipe" },
 		);
 		info(`diff tree result: ${JSON.stringify(result)}`);
 		info(`result.output: ${JSON.stringify(result.output)}`);
