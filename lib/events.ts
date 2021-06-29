@@ -154,7 +154,11 @@ export async function changedFilesFromCommits(
 			},
 		);
 		info(`diff tree result: ${JSON.stringify(result)}`);
+		info(`result.output: ${JSON.stringify(result.output)}`);
+		info(`result.stdout: ${JSON.stringify(result.stdout)}`);
+
 		result.output.forEach(item => set.add(item));
 	}
+	info(`changedFilesFromCommits: ${JSON.stringify(set)}`);
 	return Array.from(set).filter(file => fs.existsSync(file));
 }
