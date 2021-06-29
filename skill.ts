@@ -87,6 +87,7 @@ export const Skill = skill<FormatterConfiguration & { repos: any }>({
 			displayName: "Only format modified files",
 			description:
 				"If checked then only format files that were modified in the commit",
+			required: true,
 		},
 		push: parameter.pushStrategy({
 			displayName: "Fix problems",

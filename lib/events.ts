@@ -144,9 +144,8 @@ export async function changedFilesFromCommits(
 				level: "info",
 			},
 		);
+		info(`Result: ${JSON.stringify(result)}`);
 		result.output.forEach(item => set.add(item));
 	}
-
-	info(`Files changed: ${JSON.stringify(set)}`);
 	return Array.from(set).filter(file => fs.existsSync(file));
 }
