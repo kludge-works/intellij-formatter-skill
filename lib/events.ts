@@ -146,34 +146,29 @@ export async function changedFilesFromCommits(
 	const set = new Set<string>();
 
 	for (const commit of commits) {
-		const result = await project.spawn(
-			"bash",
-			[
-				"-c",
-				"git",
-				"diff-tree",
-				"--no-commit-id",
-				"--name-only",
-				"-r",
-				commit.sha,
-			],
-			// {
-			// 	level: "info",
-			// },
-		);
+		const result = await project.spawn("git", [
+			"diff-tree",
+			"--no-commit-id",
+			"--name-only",
+			"-r",
+			commit.sha,
+		]);
 		info(`diff tree result: ${JSON.stringify(result)}`);
 		info(`result.output: ${JSON.stringify(result.output)}`);
 		info(`result.stdout: ${JSON.stringify(result.stdout)}`);
 
-		// const result2 = await project.exec("git", [
-		// 	"diff-tree",
-		// 	"--no-commit-id",
-		// 	"--name-only",
-		// 	"-r",
-		// 	commit.sha,
-		// ]);
-		//
-		// info(`result2: ${JSON.stringify(result2.stdout)}`);
+		const result2 = await project.exec("git", [
+			"diff-tree",
+			"--no-commit-id",
+			"--name-only",
+			"-r",
+			commit.sha,
+		]);
+
+		info(`result2: ${JSON.stringify(result2.stdout)}`);
+
+		const result3 = await project.exec("ls");
+		info(`result3: ${JSON.stringify(result3.stdout)}`);
 
 		result.output.forEach(item => set.add(item));
 	}

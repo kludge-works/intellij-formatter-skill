@@ -40,7 +40,7 @@ export const Skill = skill<FormatterConfiguration & { repos: any }>({
 
 	containers: {
 		formatter: {
-			image: "docker.io/kludgeworks/intellij-formatter-skill:1.0.5",
+			image: "docker.io/kludgeworks/intellij-formatter-skill:1.0.6",
 			resources: {
 				limit: {
 					cpu: 2,
