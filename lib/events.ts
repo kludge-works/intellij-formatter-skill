@@ -59,6 +59,7 @@ export const onPush: EventHandler<
 		}),
 	);
 
+	info(`config: ${JSON.stringify(ctx.configuration.parameters)}`);
 	// push.commits
 	await formatProject(
 		project,
