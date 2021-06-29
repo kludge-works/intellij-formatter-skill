@@ -153,9 +153,13 @@ export async function changedFilesFromCommits(
 			"-r",
 			commit.sha,
 		]);
-		info(`stdout ${result.stdout}`);
-		result.stdout.split("\n").forEach(item => set.add(item));
+
+		await info(`stdout ${result.stdout}`);
+		const lines = result.stdout.split("\n");
+		await info(`lines ${lines}`);
+
+		lines.forEach(item => set.add(item));
 	}
-	info(`changedFilesFromCommits: ${JSON.stringify(set)}`);
+	await info(`changedFilesFromCommits: ${JSON.stringify(set)}`);
 	return Array.from(set).filter(file => fs.existsSync(file));
 }
