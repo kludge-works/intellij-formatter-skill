@@ -57,6 +57,7 @@ export const onPush: EventHandler<
 			credential,
 			branch: push.branch,
 		}),
+		{ alwaysDeep: true },
 	);
 
 	info(`config: ${JSON.stringify(ctx.configuration.parameters)}`);
