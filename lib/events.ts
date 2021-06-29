@@ -100,6 +100,7 @@ export async function formatProject(
 	config: FormatterConfiguration,
 	allFilesToFormat: string[],
 ): Promise<void> {
+	info(`formatProject: ${JSON.stringify(allFilesToFormat)}`);
 	const args: string[] = [];
 	if (config.codestyle) {
 		fs.writeFileSync("/atm/home/codestyle.xml", config.codestyle);
@@ -121,7 +122,7 @@ export async function filesToFormat(
 	config: FormatterConfiguration,
 	commits: Commit[],
 ): Promise<string[]> {
-	debug(
+	info(
 		`filesToFormat( commits: ${JSON.stringify(
 			commits,
 		)}, config: ${JSON.stringify(config)})`,
