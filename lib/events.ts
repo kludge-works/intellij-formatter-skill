@@ -135,6 +135,7 @@ export async function filesToFormat(
 	} else {
 		allFilesToFormat = await globFiles(project, config.glob);
 	}
+	info(`filesToFormat: ${JSON.stringify(allFilesToFormat)}`);
 	return mm.not(allFilesToFormat, config.ignores);
 }
 
@@ -159,5 +160,8 @@ export async function changedFilesFromCommits(
 
 		lines.forEach(item => set.add(item));
 	}
-	return Array.from(set);
+	return Array.from(set).filter(file => {
+		info(`project.path exists: ${fs.existsSync(project.path(file))}`);
+		return fs.existsSync(project.path(file));
+	});
 }
