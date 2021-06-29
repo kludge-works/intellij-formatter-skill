@@ -23,7 +23,7 @@ import {
 	subscription,
 } from "@atomist/skill";
 import { Commit } from "@atomist/skill/lib/definition/subscription/common_types";
-import { info } from "@atomist/skill/lib/log";
+import { debug, info } from "@atomist/skill/lib/log";
 import { globFiles, Project } from "@atomist/skill/lib/project";
 import * as fs from "fs-extra";
 import * as mm from "micromatch";
@@ -134,6 +134,7 @@ export async function changedFilesFromCommits(
 	project: Project,
 	commits: Commit[],
 ): Promise<string[]> {
+	debug(`changedFilesFromCommit: ${JSON.stringify(commits)}`);
 	const set = new Set<string>();
 
 	for (const commit of commits) {
@@ -144,7 +145,7 @@ export async function changedFilesFromCommits(
 				level: "info",
 			},
 		);
-		info(`Result: ${JSON.stringify(result)}`);
+		info(`diff tree result: ${JSON.stringify(result)}`);
 		result.output.forEach(item => set.add(item));
 	}
 	return Array.from(set).filter(file => fs.existsSync(file));
