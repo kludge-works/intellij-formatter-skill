@@ -146,13 +146,11 @@ export async function changedFilesFromCommits(
 	const set = new Set<string>();
 
 	for (const commit of commits) {
-		const result = await project.spawn("git", [
-			"diff-tree",
-			"--no-commit-id",
-			"--name-only",
-			"-r",
-			commit.sha,
-		]);
+		const result = await project.spawn(
+			"git",
+			["diff-tree", "--no-commit-id", "--name-only", "-r", commit.sha],
+			{ stdio: "inherit" },
+		);
 		info(`diff tree result: ${JSON.stringify(result)}`);
 		info(`result.output: ${JSON.stringify(result.output)}`);
 		info(`result.stdout: ${JSON.stringify(result.stdout)}`);
@@ -167,7 +165,7 @@ export async function changedFilesFromCommits(
 
 		info(`result2: ${JSON.stringify(result2.stdout)}`);
 
-		const result3 = await project.spawn("ls");
+		const result3 = await project.spawn("ls", null, { stdio: "inherit" });
 		info(`result3: ${JSON.stringify(result3)}`);
 		info(`result3.stdout: ${JSON.stringify(result3.stdout)}`);
 		info(`result3.output: ${JSON.stringify(result3.output)}`);
