@@ -147,8 +147,16 @@ export async function changedFilesFromCommits(
 
 	for (const commit of commits) {
 		const result = await project.spawn(
-			"git",
-			["diff-tree", "--no-commit-id", "--name-only", "-r", commit.sha],
+			"bash",
+			[
+				"-c",
+				"git",
+				"diff-tree",
+				"--no-commit-id",
+				"--name-only",
+				"-r",
+				commit.sha,
+			],
 			// {
 			// 	level: "info",
 			// },
