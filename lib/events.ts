@@ -155,7 +155,7 @@ export async function changedFilesFromCommits(
 		]);
 
 		await info(`stdout ${result.stdout}`);
-		const lines = result.stdout.split("\n");
+		const lines = result.stdout.trim().split("\n");
 		await info(`lines ${lines}`);
 
 		lines.forEach(item => {
@@ -167,5 +167,5 @@ export async function changedFilesFromCommits(
 	}
 
 	await info(`changedFilesFromCommits: ${JSON.stringify(set)}`);
-	return Array.from(set).filter(file => fs.existsSync(file));
+	return Array.from(set).filter(file => fs.existsSync(project.path(file)));
 }
