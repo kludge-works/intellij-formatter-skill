@@ -27,6 +27,7 @@ import { debug, info } from "@atomist/skill/lib/log";
 import { globFiles, Project } from "@atomist/skill/lib/project";
 import * as fs from "fs-extra";
 import * as mm from "micromatch";
+import * as path from "path";
 
 import { FormatterConfiguration, intellijFormatter } from "./configuration";
 
@@ -135,8 +136,10 @@ export async function filesToFormat(
 	} else {
 		allFilesToFormat = await globFiles(project, config.glob);
 	}
-	info(`filesToFormat: ${JSON.stringify(allFilesToFormat)}`);
-	return mm.not(allFilesToFormat, config.ignores);
+	return mm.not(
+		allFilesToFormat,
+		config.ignores?.length ? config.ignores : undefined,
+	);
 }
 
 export async function changedFilesFromCommits(
@@ -160,8 +163,7 @@ export async function changedFilesFromCommits(
 
 		lines.forEach(item => set.add(item));
 	}
-	return Array.from(set).filter(file => {
-		info(`project.path exists: ${fs.existsSync(project.path(file))}`);
-		return fs.existsSync(project.path(file));
-	});
+	return Array.from(set).filter(file =>
+		fs.existsSync(path.join(project.path(), file)),
+	);
 }

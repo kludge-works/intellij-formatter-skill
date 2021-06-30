@@ -22,7 +22,7 @@ describe("on event", function () {
 		tmp.setGracefulCleanup();
 	});
 
-	it.skip("only return distinct files that exist", async () => {
+	it("only return distinct files that exist", async () => {
 		const project = createFakeProject(
 			sandbox.fake(shaToFilenamesCmdFunction),
 		);
@@ -34,11 +34,12 @@ describe("on event", function () {
 
 		sandbox
 			.stub(fs, "existsSync")
-			.withArgs("same.java")
-			.returns(true)
-			.withArgs("distinct-1.java")
-			.returns(true)
-			.withArgs("distinct-2.java")
+			.withArgs(
+				sinon
+					.match("same.java")
+					.or(sinon.match("distinct-1.java"))
+					.or(sinon.match("distinct-2.java")),
+			)
 			.returns(true);
 
 		const files = await event.changedFilesFromCommits(
@@ -52,7 +53,7 @@ describe("on event", function () {
 		]);
 	});
 
-	it.skip("format files from commits", async () => {
+	it("format files from commits", async () => {
 		const project = createFakeProject(
 			sandbox.fake(shaToFilenamesCmdFunction),
 		);
@@ -64,11 +65,12 @@ describe("on event", function () {
 
 		sandbox
 			.stub(fs, "existsSync")
-			.withArgs("same.java")
-			.returns(true)
-			.withArgs("distinct-1.java")
-			.returns(true)
-			.withArgs("distinct-2.java")
+			.withArgs(
+				sinon
+					.match("same.java")
+					.or(sinon.match("distinct-1.java"))
+					.or(sinon.match("distinct-2.java")),
+			)
 			.returns(true);
 
 		const files = await event.filesToFormat(
@@ -128,9 +130,32 @@ describe("on event", function () {
 		assert.deepEqual(files, ["distinct-blab.java", "min.java", "ws.java"]);
 	});
 
+	it("format all java files with empty ignore pattern", async () => {
+		const project = createFakeProject(
+			sandbox.fake(shaToFilenamesCmdFunction),
+		);
+
+		fs.closeSync(fs.openSync(`${project.path()}/distinct-blab.java`, "w"));
+		fs.closeSync(fs.openSync(`${project.path()}/min.java`, "w"));
+		fs.closeSync(fs.openSync(`${project.path()}/ws.java`, "w"));
+		fs.closeSync(fs.openSync(`${project.path()}/min.cpp`, "w"));
+
+		const files = await event.filesToFormat(
+			project,
+			{
+				glob: "*.java",
+				onlyFormatChangedFiles: false,
+				ignores: [],
+			} as FormatterConfiguration,
+			null,
+		);
+
+		assert.deepEqual(files, ["distinct-blab.java", "min.java", "ws.java"]);
+	});
+
 	it("formatProject slicing", async () => {
 		const fake = sandbox.fake(shaToFilenamesCmdFunction);
-		const project = createFakeProject(fake);
+		const project = createFakeProject(sinon.fake(), fake);
 
 		await event.formatProject(
 			project,
@@ -138,12 +163,12 @@ describe("on event", function () {
 			["1.java", "2.java", "3.java"],
 		);
 
-		assert.ok(fake.calledTwice, "project.spawn(..) should be called twice");
+		assert.ok(fake.calledTwice, "project.exec(..) should be called twice");
 	});
 
 	it("formatProject custom codestyle", async () => {
 		const fake = sandbox.fake();
-		const project = createFakeProject(fake);
+		const project = createFakeProject(sinon.fake(), fake);
 
 		const writeFileSyncStub = sandbox
 			.stub(fs, "writeFileSync")
@@ -173,7 +198,7 @@ describe("on event", function () {
 
 	it("formatProject default codestyle", async () => {
 		const fake = sandbox.fake();
-		const project = createFakeProject(fake);
+		const project = createFakeProject(sinon.fake(), fake);
 
 		const writeFileSyncStub = sandbox
 			.stub(fs, "writeFileSync")
@@ -198,7 +223,10 @@ describe("on event", function () {
 		]);
 	});
 
-	function createFakeProject(fakeCmd: sinon.SinonSpy): Project {
+	function createFakeProject(
+		exec: sinon.SinonSpy,
+		spawn = sandbox.fake(),
+	): Project {
 		const projectDir = tmp.dirSync();
 		return {
 			id: {
@@ -209,8 +237,8 @@ describe("on event", function () {
 				sha: "9e48f944bf1aaf41feeea003aa1c96a92cec0c4f",
 				type: RepositoryProviderType.GitHubCom,
 			},
-			spawn: fakeCmd,
-			exec: sandbox.fake(),
+			exec,
+			spawn,
 			path: () => projectDir.name,
 		};
 	}
@@ -219,6 +247,6 @@ describe("on event", function () {
 const shaToFilenamesCmdFunction = (cmd, args) => {
 	return {
 		status: 0,
-		output: args[args.length - 1].split(","),
+		stdout: args[args.length - 1].split(",").join("\n"),
 	};
 };
