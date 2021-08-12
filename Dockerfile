@@ -14,7 +14,7 @@ RUN apt-get update && \
 
 
 
-FROM node:lts@sha256:af9879e7473d347048c5d5919aa9775f27c33d92e4d58058ffdc08247f4bd902 AS build
+FROM node:lts@sha256:fa05e1eec0a6723c76a32b30ad05bf3bf8933b2519b826a51258c5feba61529c AS build
 
 WORKDIR /usr/src
 
