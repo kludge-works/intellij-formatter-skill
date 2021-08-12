@@ -8,7 +8,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     wget --progress=dot:giga "https://download-cdn.jetbrains.com/idea/ideaIC-${intellijVersion}.tar.gz" && \
-    tar xvf "ideaIC-${intellijVersion}.tar.gz" && \
+    tar xf "ideaIC-${intellijVersion}.tar.gz" && \
     rm "ideaIC-${intellijVersion}.tar.gz"  && \
     mv idea-* intellij
 
