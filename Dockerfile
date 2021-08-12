@@ -14,7 +14,7 @@ RUN apt-get update && \
 
 
 
-FROM node:lts@sha256:af9879e7473d347048c5d5919aa9775f27c33d92e4d58058ffdc08247f4bd902 AS build
+FROM node:lts@sha256:fa05e1eec0a6723c76a32b30ad05bf3bf8933b2519b826a51258c5feba61529c AS build
 
 WORKDIR /usr/src
 
@@ -25,7 +25,7 @@ RUN npm ci --no-optional && \
     rm -rf node_modules .git
 
 
-FROM atomist/skill:node14@sha256:1f5574256296251d381a78d1987b83723534b419409d54a1a12b5595e23fb47f
+FROM atomist/skill:node14@sha256:aa51958caa3d96c3936e8baea59b5513a45a3a33d25b6dad13eebf90ae323fc5
 
 WORKDIR "/skill"
 
