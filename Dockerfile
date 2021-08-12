@@ -2,7 +2,7 @@ FROM ubuntu@sha256:86ac87f73641c920fb42cc9612d4fb57b5626b56ea2a19b894d0673fd5b4f
 ARG intellijVersion=2021.2
 WORKDIR /downloads/
 
-RUN apt-get update && apt-get upgrade && \
+RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install wget=1.20.3-1ubuntu1 ca-certificates=20210119~20.04.1 \
     -y --no-install-recommends && \
     apt-get clean && \
