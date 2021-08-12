@@ -3,7 +3,7 @@ ARG intellijVersion=2021.1.1
 WORKDIR /downloads/
 
 RUN apt-get update && \
-    apt-get install wget ca-certificates \
+    apt-get install wget=1.20.3-1ubuntu1 ca-certificates=20210119~20.04.1 \
     -y --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
