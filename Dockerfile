@@ -42,5 +42,5 @@ WORKDIR "/atm/home"
 ENTRYPOINT ["node", "--no-deprecation", "--no-warnings", "--expose_gc", "--optimize_for_size", "--always_compact", "--max_old_space_size=512", "/skill/node_modules/.bin/atm-skill"]
 CMD ["run"]
 
-# trigger build #2
+# trigger build #3
 LABEL intellij.version="$intellijVersion"
